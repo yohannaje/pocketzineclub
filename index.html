@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pocket Zine — Make beautiful zines in minutes</title>
+    <meta name="description" content="A local-first publishing tool for illustrators, photographers and writers. Design zines, photo essays and mini magazines without learning InDesign." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pocket Zine — Make beautiful zines in minutes" />
+    <meta property="og:description" content="A simpler way to make independent publications. Local-first. No accounts. Your work stays yours." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+      NOTE: images in /landing/zines are reference/placeholder artwork pulled from the
+      inspiration folder for layout purposes. Swap with real Pocket Zine exports before launch.
+    -->
+    <style>
+      :root {
+        --paper: #f2efe6;
+        --paper-2: #eae5d9;
+        --panel: #f7f5ee;
+        --ink: #17160f;
+        --ink-soft: #5b574b;
+        --ink-faint: #908b7c;
+        --line: #d8d2c2;
+        --line-strong: #c4bda9;
+        --accent: #ff5a1f;
+        --accent-deep: #e6420a;
+        --dark: #16150f;
+        --dark-soft: #b8b2a1;
+        --serif: "EB Garamond", Georgia, serif;
+        --mono: "Space Mono", ui-monospace, monospace;
+        --sans: "Work Sans", system-ui, sans-serif;
+        --maxw: 1200px;
+        --pad: clamp(20px, 5vw, 64px);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
+
+      /* ---- type ---- */
+      .mono {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .serif { font-family: var(--serif); font-weight: 400; }
+      h1, h2, h3 { font-weight: 400; margin: 0; }
+      .display {
+        font-family: var(--serif);
+        font-weight: 400;
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+      }
+
+      /* section label pill */
+      .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        border: 1px solid var(--line-strong);
+        background: var(--panel);
+        padding: 6px 12px;
+        border-radius: 2px;
+      }
+      .label .dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
+
+      /* ---- layout shell ---- */
+      .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad); }
+      section { position: relative; }
+      .bordered { border-top: 1px solid var(--line); }
+
+      /* ruled vertical guides behind content */
+      .guides {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad);
+      }
+      .guides::before, .guides::after {
+        content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
+        background: var(--line); opacity: 0.6;
+      }
+      .guides::before { left: var(--pad); }
+      .guides::after { right: var(--pad); }
+      @media (max-width: 760px) { .guides { display: none; } }
+
+      /* corner ticks */
+      .tick { position: absolute; font-family: var(--mono); color: var(--ink-faint); font-size: 13px; line-height: 1; z-index: 2; }
+      .tick.tl { top: 10px; left: calc(var(--pad) - 4px); }
+      .tick.tr { top: 10px; right: calc(var(--pad) - 4px); }
+
+      /* ---- nav ---- */
+      header.nav {
+        position: sticky; top: 0; z-index: 50;
+        background: color-mix(in srgb, var(--paper) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .brand img { height: 16px; width: auto; }
+      .brand .tag { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink-faint); border: 1px solid var(--line-strong); padding: 2px 6px; border-radius: 2px; }
+      .nav-links { display: flex; align-items: center; gap: 26px; }
+      .nav-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+      .nav-links a:hover { color: var(--ink); }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+        padding: 9px 16px; border: 1px solid var(--ink); border-radius: 2px;
+        background: var(--ink); color: var(--paper);
+        transition: background .15s, color .15s, transform .15s;
+      }
+      .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .btn.ghost { background: transparent; color: var(--ink); }
+      .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+      .btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .btn.accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+      .btn.lg { font-size: 12px; padding: 14px 26px; }
+      .nav-cta { display: flex; gap: 10px; }
+      @media (max-width: 760px) { .nav-links { display: none; } .nav-cta .btn.ghost { display: none; } }
+
+      /* ---- hero ---- */
+      .hero { padding-top: clamp(48px, 8vw, 96px); padding-bottom: clamp(40px, 6vw, 72px); }
+      .hero h1 { font-size: clamp(40px, 8vw, 92px); max-width: 14ch; margin-top: 22px; }
+      .hero h1 em { font-style: italic; color: var(--accent); }
+      .hero .sub { max-width: 56ch; margin-top: 26px; color: var(--ink-soft); font-size: clamp(15px, 1.6vw, 18px); }
+      .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 34px; }
+      .hero-cta .note { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--ink-faint); text-transform: uppercase; }
+
+      /* hero visual */
+      .hero-visual {
+        margin-top: clamp(40px, 6vw, 64px); position: relative;
+        border: 1px solid var(--line-strong); background: var(--panel);
+      }
+      .hero-visual .bar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 9px 14px; border-bottom: 1px solid var(--line); font-family: var(--mono);
+        font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint);
+      }
+      .hero-visual .bar .dots { display: flex; gap: 6px; }
+      .hero-visual .bar .dots i { width: 8px; height: 8px; border: 1px solid var(--line-strong); border-radius: 50%; display: inline-block; }
+      /* lo-fi wireframe of the editor */
+      .wireframe { display: grid; grid-template-columns: 54px 1fr 184px; min-height: clamp(300px, 42vw, 500px); background: var(--panel); }
+      .wf-tools { border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; padding: 16px 0; align-items: center; }
+      .wf-tool { width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; color: var(--ink-soft); background: var(--paper); }
+      .wf-tool:first-child { border-color: var(--accent); color: var(--accent); }
+      .wf-canvas { position: relative; padding: clamp(22px, 3.5vw, 46px); display: flex; align-items: center; justify-content: center;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 22px 22px; }
+      .wf-spread { display: flex; box-shadow: 0 2px 0 rgba(0,0,0,0.04); }
+      .wf-page { width: clamp(96px, 13vw, 152px); aspect-ratio: 3/4; background: var(--paper); border: 1px solid var(--ink); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+      .wf-page:first-child { border-right: 1px dashed var(--line-strong); }
+      .wf-img { border: 1px solid var(--line-strong); height: 46%;
+        background:
+          linear-gradient(45deg, transparent calc(50% - 0.6px), var(--line-strong) 50%, transparent calc(50% + 0.6px)),
+          linear-gradient(-45deg, transparent calc(50% - 0.6px), var(--line-strong) 50%, transparent calc(50% + 0.6px)); }
+      .wf-img.sm { height: 30%; margin-top: auto; }
+      .wf-line { height: 5px; background: var(--line-strong); border-radius: 2px; display: block; }
+      .wf-line.head { height: 9px; background: var(--ink); }
+      .w40 { width: 40%; } .w50 { width: 50%; } .w60 { width: 60%; } .w70 { width: 70%; } .w80 { width: 80%; } .w90 { width: 90%; }
+      .wf-tag { position: absolute; left: 16px; bottom: 12px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+      .wf-panel { border-left: 1px solid var(--line); padding: 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+      .wf-plabel { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
+      .wf-field { height: 26px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); }
+      .wf-field.short { height: 20px; width: 65%; }
+      .wf-swatches { display: flex; gap: 6px; margin-top: 2px; }
+      .wf-swatches i { width: 18px; height: 18px; border: 1px solid var(--line-strong); border-radius: 3px; display: block; background: var(--paper); }
+      .wf-swatches i.on { background: var(--accent); border-color: var(--accent); }
+      @media (max-width: 760px) { .wireframe { grid-template-columns: 46px 1fr; } .wf-panel { display: none; } }
+
+      /* ---- social proof / create marquee ---- */
+      .proof { padding: 38px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .proof .madeby { text-align: center; max-width: 60ch; margin: 0 auto; font-family: var(--serif); font-size: clamp(18px, 2.4vw, 26px); color: var(--ink); }
+      .proof .madeby b { color: var(--accent); font-weight: 400; font-style: italic; }
+      .tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 22px; }
+      .tags span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); border: 1px solid var(--line-strong); padding: 7px 13px; border-radius: 2px; background: var(--panel); }
+
+      /* generic section header */
+      .sec { padding: clamp(64px, 9vw, 120px) 0; }
+      .sec-head { max-width: 64ch; }
+      .sec-head h2 { font-family: var(--serif); font-size: clamp(30px, 5vw, 56px); line-height: 1.04; margin-top: 18px; letter-spacing: -0.01em; }
+      .sec-head p { color: var(--ink-soft); margin-top: 16px; max-width: 52ch; }
+
+      /* ---- templates grid ---- */
+      .tgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 52px; background: var(--line); border: 1px solid var(--line); }
+      .tcard { background: var(--panel); position: relative; overflow: hidden; }
+      .tcard .thumb { aspect-ratio: 3/4; overflow: hidden; background: var(--paper-2); }
+      .tcard .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+      .tcard:hover .thumb img { transform: scale(1.04); }
+      .tcard .meta { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; border-top: 1px solid var(--line); }
+      .tcard .meta .name { font-family: var(--serif); font-size: 17px; }
+      .tcard .meta .id { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.1em; }
+      @media (max-width: 760px) { .tgrid { grid-template-columns: repeat(2, 1fr); } }
+
+      /* ---- comparison ---- */
+      .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 52px; border: 1px solid var(--line-strong); }
+      .col { padding: 34px clamp(22px, 3vw, 44px) 40px; }
+      .col.other { border-right: 1px solid var(--line); color: var(--ink-soft); }
+      .col.pz { background: var(--ink); color: var(--paper); }
+      .col h3 { font-family: var(--serif); font-size: 26px; margin-bottom: 6px; }
+      .col .tagline { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+      .col ul { list-style: none; padding: 0; margin: 26px 0 0; }
+      .col li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px dashed var(--line-strong); font-size: 15px; align-items: baseline; }
+      .col.pz li { border-top-color: #33312a; }
+      .col li .mk { font-family: var(--mono); font-size: 12px; opacity: 0.6; }
+      .col.pz li .mk { color: var(--accent); opacity: 1; }
+      @media (max-width: 760px) { .compare { grid-template-columns: 1fr; } .col.other { border-right: 0; border-bottom: 1px solid var(--line); } }
+
+      /* ---- privacy (dark) ---- */
+      .dark-sec { background: var(--dark); color: var(--paper); border-top: 1px solid var(--dark); }
+      .dark-sec .label { background: #1f1d16; border-color: #34322a; color: var(--dark-soft); }
+      .dark-sec .sec-head h2 { color: var(--paper); }
+      .dark-sec .sec-head p { color: var(--dark-soft); }
+      .privacy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 52px; background: #2a2820; border: 1px solid #2a2820; }
+      .pcell { background: var(--dark); padding: 28px 24px; }
+      .pcell .x { font-family: var(--mono); color: var(--accent); font-size: 13px; }
+      .pcell h3 { font-family: var(--serif); font-size: 20px; margin-top: 12px; color: var(--paper); }
+      .pcell p { font-size: 13px; color: var(--dark-soft); margin-top: 6px; }
+      @media (max-width: 760px) { .privacy-grid { grid-template-columns: 1fr; } }
+
+      /* ---- export / booklet ---- */
+      .export-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(24px, 4vw, 56px); margin-top: 52px; align-items: stretch; }
+      .booklet { border: 1px solid var(--line-strong); background: var(--panel); padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 22px 22px; }
+      .ascii-book { font-family: var(--mono); font-weight: 700; font-size: clamp(15px, 2.4vw, 26px); line-height: 1.12; color: var(--ink); margin: 0; letter-spacing: 0.04em; }
+      .ascii-cap { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+      .feat-list { list-style: none; padding: 0; margin: 0; align-self: center; }
+      .feat-list li { padding: 16px 0; border-top: 1px solid var(--line); display: flex; gap: 14px; align-items: baseline; }
+      .feat-list li:first-child { border-top: 0; }
+      .feat-list .fn { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; min-width: 28px; }
+      .feat-list .ft { font-family: var(--serif); font-size: 19px; }
+      .feat-list .fd { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+      @media (max-width: 820px) { .export-grid { grid-template-columns: 1fr; } }
+
+      /* ---- devices ---- */
+      .devices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 52px; background: var(--line); border: 1px solid var(--line); }
+      .device { background: var(--panel); padding: 38px 24px 30px; text-align: center; }
+      .ascii-device { font-family: var(--mono); font-weight: 700; font-size: clamp(13px, 1.5vw, 17px); line-height: 1.05; color: var(--ink); margin: 0 auto 24px; display: inline-block;
+        filter: drop-shadow(2px 3px 0 rgba(23,22,15,0.13)) drop-shadow(4px 6px 0 rgba(23,22,15,0.05)); }
+      .ascii-device .ac { color: var(--accent); }
+      .device .dn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+      .device .dd { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+      .chips { list-style: none; padding: 0; margin: 34px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+      .chips li { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); border: 1px solid var(--line-strong); background: var(--panel); padding: 9px 14px; border-radius: 2px; display: flex; align-items: center; gap: 8px; }
+      .chips li::before { content: "[✓]"; color: var(--accent); }
+      @media (max-width: 760px) { .devices { grid-template-columns: 1fr; } }
+
+      /* ---- gallery wall ---- */
+      .gallery-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+      .masonry { columns: 4 220px; column-gap: 14px; margin-top: 44px; }
+      .masonry figure { margin: 0 0 14px; break-inside: avoid; border: 1px solid var(--line-strong); background: var(--panel); position: relative; }
+      .masonry img { width: 100%; height: auto; }
+      .masonry figcaption { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); padding: 7px 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; }
+
+      /* ---- final cta ---- */
+      .final { background: var(--accent); color: #fff; text-align: center; padding: clamp(72px, 11vw, 150px) 0; }
+      .final h2 { font-family: var(--serif); font-size: clamp(36px, 7vw, 84px); line-height: 1.02; }
+      .final p { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 22px; opacity: 0.92; }
+      .final .btn { margin-top: 38px; background: #fff; color: var(--ink); border-color: #fff; font-size: 13px; padding: 16px 34px; }
+      .final .btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+      .final .ascii { color: rgba(255,255,255,0.55); margin-top: 44px; }
+
+      /* ---- footer ---- */
+      footer { background: var(--dark); color: var(--dark-soft); padding: 56px 0 40px; }
+      .foot-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+      footer .brand img { filter: invert(1); height: 18px; }
+      .foot-cols { display: flex; gap: clamp(30px, 6vw, 80px); flex-wrap: wrap; }
+      .foot-col h4 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-soft); margin: 0 0 14px; }
+      .foot-col a { display: block; font-size: 13.5px; color: #d9d4c5; padding: 4px 0; }
+      .foot-col a:hover { color: var(--accent); }
+      .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 50px; padding-top: 22px; border-top: 1px solid #2a2820; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+
+      /* reveal */
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+      @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+    </style>
+  </head>
+  <body>
+    <div class="guides" aria-hidden="true"></div>
+
+    <!-- ===================== NAV ===================== -->
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top" aria-label="Pocket Zine home">
+          <img src="/landing/logo.svg" alt="Pocket Zine" />
+          <span class="tag">v0.1</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#templates">Templates</a>
+          <a href="#export">Export</a>
+          <a href="#gallery">Gallery</a>
+        </nav>
+        <div class="nav-cta">
+          <a class="btn ghost" href="#donate">Donate</a>
+          <a class="btn" href="https://pocketzine.app">Start Creating</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <span id="top"></span>
+    <section class="hero">
+      <span class="tick tl">+</span><span class="tick tr">+</span>
+      <div class="wrap">
+        <span class="label"><span class="dot"></span> Local-first publishing tool</span>
+        <h1 class="display reveal">Make beautiful <em>zines</em> in minutes.</h1>
+        <p class="sub reveal">Pocket Zine is a local-first publishing tool for illustrators, photographers, writers and creative people who want to make beautiful publications — without learning complex software.</p>
+        <div class="hero-cta reveal">
+          <a class="btn accent lg" href="https://pocketzine.app">Start Creating</a>
+          <a class="btn ghost lg" href="#donate">Donate</a>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="bar">
+            <span>pocket&nbsp;zine — editor · untitled.pz</span>
+            <span class="dots"><i></i><i></i><i></i></span>
+          </div>
+          <div class="wireframe" aria-label="A simplified wireframe of the Pocket Zine editor">
+            <aside class="wf-tools">
+              <span class="wf-tool">▦</span>
+              <span class="wf-tool">▤</span>
+              <span class="wf-tool">T</span>
+              <span class="wf-tool">⬚</span>
+              <span class="wf-tool">✎</span>
+              <span class="wf-tool">◍</span>
+            </aside>
+            <div class="wf-canvas">
+              <div class="wf-spread">
+                <div class="wf-page">
+                  <div class="wf-img"></div>
+                  <span class="wf-line w70"></span>
+                  <span class="wf-line w90"></span>
+                  <span class="wf-line w50"></span>
+                </div>
+                <div class="wf-page">
+                  <span class="wf-line w40 head"></span>
+                  <span class="wf-line w80"></span>
+                  <span class="wf-line w90"></span>
+                  <span class="wf-line w60"></span>
+                  <div class="wf-img sm"></div>
+                </div>
+              </div>
+              <span class="wf-tag">spread 02 / 08 · A5</span>
+            </div>
+            <aside class="wf-panel">
+              <span class="wf-plabel">Properties</span>
+              <div class="wf-field"></div>
+              <div class="wf-field"></div>
+              <span class="wf-plabel">Grid · 12 col</span>
+              <div class="wf-field short"></div>
+              <span class="wf-plabel">Fill</span>
+              <div class="wf-swatches"><i></i><i></i><i class="on"></i><i></i></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SOCIAL PROOF ===================== -->
+    <section class="proof reveal">
+      <div class="wrap">
+        <p class="madeby">Made by <b>illustrators</b>, <b>photographers</b>, <b>designers</b> and <b>indie publishers</b> — for everyone who ever wanted to print their own thing.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 2 — TEMPLATES ===================== -->
+    <section class="sec bordered" id="templates">
+      <span class="tick tl">⌜</span><span class="tick tr">⌝</span>
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="label"><span class="dot"></span> 02 — Start with a template</span>
+          <h2>Finished results, not wireframes.</h2>
+          <p>Every template is a real, designed publication. Open one and it already looks like something you’d want to print.</p>
+        </div>
+        <div class="tgrid reveal">
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/3a6d431c9a9b4143472fd0f606a5b1d2.jpg" alt="Travel journal template"></div><div class="meta"><span class="name">Travel Journal</span><span class="id">TX01</span></div></figure>
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/47682beae2eaca13fedf18527dbef244.jpg" alt="Photo essay template"></div><div class="meta"><span class="name">Photo Essay</span><span class="id">PE02</span></div></figure>
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/233361a4af2f50dd177b80e22f6e15f1.jpg" alt="Collage zine template"></div><div class="meta"><span class="name">Collage Zine</span><span class="id">CZ03</span></div></figure>
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/c5bb9640b0a84ce9cb2066c929fb77c6.jpg" alt="Poetry zine template"></div><div class="meta"><span class="name">Poetry Zine</span><span class="id">PZ04</span></div></figure>
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/cbde1292917c1d51c0bb19f7779517c5.jpg" alt="Art portfolio template"></div><div class="meta"><span class="name">Art Portfolio</span><span class="id">AP05</span></div></figure>
+          <figure class="tcard"><div class="thumb"><img src="/landing/zines/39f92f49a056b160a2abc47d8b22c234.jpg" alt="Experimental layout template"></div><div class="meta"><span class="name">Experimental</span><span class="id">XP06</span></div></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 4 — PUBLISHING NOT DESIGNING ===================== -->
+    <section class="sec bordered">
+      <span class="tick tl">⌜</span><span class="tick tr">⌝</span>
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="label"><span class="dot"></span> 03 — The difference</span>
+          <h2>Made for publishing, not designing.</h2>
+          <p>Most design tools are built for professionals and ask you to learn them first. Pocket Zine is built around the thing you actually want: a finished publication.</p>
+        </div>
+        <div class="compare reveal">
+          <div class="col other">
+            <span class="tagline">Other design tools</span>
+            <h3>Overwhelming</h3>
+            <ul>
+              <li><span class="mk">×</span> Dozens of panels and menus</li>
+              <li><span class="mk">×</span> Built for professionals</li>
+              <li><span class="mk">×</span> Steep learning curve</li>
+              <li><span class="mk">×</span> Design-first, publish later</li>
+            </ul>
+          </div>
+          <div class="col pz">
+            <span class="tagline">Pocket Zine</span>
+            <h3>Focused</h3>
+            <ul>
+              <li><span class="mk">→</span> Visual and beginner friendly</li>
+              <li><span class="mk">→</span> One screen, no clutter</li>
+              <li><span class="mk">→</span> Learn it in minutes</li>
+              <li><span class="mk">→</span> Publication-first by design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 5 — PRIVACY (DARK) ===================== -->
+    <section class="sec dark-sec">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="label"><span class="dot"></span> 04 — Yours alone</span>
+          <h2>Everything stays on your device.</h2>
+          <p>No accounts. No cloud. No tracking. No subscriptions. Your projects never leave your machine — and no one but you can open them.</p>
+        </div>
+        <div class="privacy-grid reveal">
+          <div class="pcell"><span class="x">✕ accounts</span><h3>No sign-up</h3><p>Open the app and start. No email, no password, no wall.</p></div>
+          <div class="pcell"><span class="x">✕ cloud</span><h3>No servers</h3><p>Files live locally in your browser, not on someone’s database.</p></div>
+          <div class="pcell"><span class="x">✕ tracking</span><h3>No watching</h3><p>No analytics following you around. We can’t see your work.</p></div>
+          <div class="pcell"><span class="x">✕ fees</span><h3>No subscription</h3><p>Make as many zines as you want. Nothing to cancel.</p></div>
+          <div class="pcell"><span class="x">✕ lock-in</span><h3>No access</h3><p>No one can reach your projects — not even us.</p></div>
+          <div class="pcell"><span class="x">✓ ownership</span><h3>Your work is yours</h3><p>Export anytime. It belongs to you, full stop.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 6 — EXPORT ===================== -->
+    <section class="sec bordered" id="export">
+      <span class="tick tl">⌜</span><span class="tick tr">⌝</span>
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="label"><span class="dot"></span> 05 — Ready to print</span>
+          <h2>Export ready-to-print zines.</h2>
+          <p>Pocket Zine handles imposition for you. Design in reading order — it lays the pages out so a printed sheet folds into a perfect little booklet.</p>
+        </div>
+        <div class="export-grid reveal">
+          <div class="booklet">
+            <pre class="ascii-book" id="asciiBook" role="img" aria-label="An ASCII book opening and turning its pages"></pre>
+            <span class="ascii-cap">pdf · folds · prints</span>
+          </div>
+          <ul class="feat-list">
+            <li><span class="fn">01</span><span><span class="ft">Booklet export</span><span class="fd">Fold-ready spreads from a single PDF.</span></span></li>
+            <li><span class="fn">02</span><span><span class="ft">Automatic page ordering</span><span class="fd">Imposition handled — you never count pages.</span></span></li>
+            <li><span class="fn">03</span><span><span class="ft">High-quality PDFs</span><span class="fd">Crisp type and full-resolution images.</span></span></li>
+            <li><span class="fn">04</span><span><span class="ft">Print-ready output</span><span class="fd">Margins and bleed sorted for the print shop.</span></span></li>
+            <li><span class="fn">05</span><span><span class="ft">Shareable files</span><span class="fd">One file to send, post, or print at home.</span></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 7 — DEVICES ===================== -->
+    <section class="sec bordered">
+      <span class="tick tl">⌜</span><span class="tick tr">⌝</span>
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="label"><span class="dot"></span> 06 — Anywhere</span>
+          <h2>Works wherever you create.</h2>
+          <p>On the couch with an iPad, at the desk on a Mac, or straight from a browser. Pick up where you left off.</p>
+        </div>
+        <div class="devices reveal">
+          <div class="device"><pre class="ascii-device" aria-hidden="true">╔═════════╗
+║┌───────┐║
+║│ <span class="ac">▦</span>     │║
+║│ ───   │║
+║│ ───── │║
+║└───────┘║
+║    ◦    ║
+╚═════════╝</pre><div class="dn">iPad</div><div class="dd">Draw with Apple Pencil</div></div>
+          <div class="device"><pre class="ascii-device" aria-hidden="true"> ╔═════════╗
+ ║┌───────┐║
+ ║│ <span class="ac">▦</span> ─── │║
+ ║│ ───── │║
+ ║└───────┘║
+╔╩═════════╩╗
+╚═══════════╝</pre><div class="dn">Mac</div><div class="dd">Full desktop canvas</div></div>
+          <div class="device"><pre class="ascii-device" aria-hidden="true">╔═══════════╗
+║ ○ ○ ○ ┌──┐║
+╠═══════════╣
+║ <span class="ac">▦</span>  ────   ║
+║ ──────    ║
+║ ───       ║
+╚═══════════╝</pre><div class="dn">Browser</div><div class="dd">Nothing to install</div></div>
+        </div>
+        <ul class="chips reveal">
+          <li>Use Apple Pencil</li>
+          <li>Draw directly on pages</li>
+          <li>Bring your own fonts</li>
+          <li>Import your own images</li>
+          <li>Create anywhere</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 7 — GALLERY ===================== -->
+    <section class="sec bordered" id="gallery">
+      <span class="tick tl">⌜</span><span class="tick tr">⌝</span>
+      <div class="wrap">
+        <div class="gallery-head reveal">
+          <div class="sec-head">
+            <span class="label"><span class="dot"></span> 07 — Made with Pocket Zine</span>
+            <h2>A wall of zines.</h2>
+          </div>
+          <p class="mono">Nobody wants a tool. They want the result. ↓</p>
+        </div>
+        <div class="masonry reveal">
+          <figure><img src="/landing/zines/233361a4af2f50dd177b80e22f6e15f1.jpg" alt="zine"><figcaption><span>Wrong Person</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/3a6d431c9a9b4143472fd0f606a5b1d2.jpg" alt="zine"><figcaption><span>Flame Vol.2</span><span>A4</span></figcaption></figure>
+          <figure><img src="/landing/zines/47682beae2eaca13fedf18527dbef244.jpg" alt="zine"><figcaption><span>Community</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/c5bb9640b0a84ce9cb2066c929fb77c6.jpg" alt="zine"><figcaption><span>Untitled</span><span>A6</span></figcaption></figure>
+          <figure><img src="/landing/zines/cbde1292917c1d51c0bb19f7779517c5.jpg" alt="zine"><figcaption><span>Portfolio</span><span>A4</span></figcaption></figure>
+          <figure><img src="/landing/zines/39f92f49a056b160a2abc47d8b22c234.jpg" alt="zine"><figcaption><span>Experiment</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/042e39b69a84512f5f6d7c70b9d713db.jpg" alt="zine"><figcaption><span>Spread 01</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/0dfdfd58c75680b07ae8f195246c7f26.jpg" alt="zine"><figcaption><span>Field Notes</span><span>A6</span></figcaption></figure>
+          <figure><img src="/landing/zines/1530423d9aafadb3ab4e8f5c91d963f2.jpg" alt="zine"><figcaption><span>Issue 03</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/18677169ecbaa79ea29dba31080fdbe5.jpg" alt="zine"><figcaption><span>Mono</span><span>A4</span></figcaption></figure>
+          <figure><img src="/landing/zines/4f6f09ea1dc1ef3225e6870070eb4467.jpg" alt="zine"><figcaption><span>Daydream</span><span>A6</span></figcaption></figure>
+          <figure><img src="/landing/zines/508056a74229534457f7ff27d8c03f78.jpg" alt="zine"><figcaption><span>Quiet</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/79c242ee2992709d353ee2a2e803a3d1.jpg" alt="zine"><figcaption><span>Static</span><span>A4</span></figcaption></figure>
+          <figure><img src="/landing/zines/98f7eaa1261ee2c1a73ac9d0d65d0a6a.jpg" alt="zine"><figcaption><span>Margins</span><span>A6</span></figcaption></figure>
+          <figure><img src="/landing/zines/b067564ffdf8e2efe625a29f436850f7.jpg" alt="zine"><figcaption><span>Folded</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/c267d63e816b4793b5500be2c2e829b8.jpg" alt="zine"><figcaption><span>Press</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/d73c500729bde82528be1e90fafb4176.jpg" alt="zine"><figcaption><span>Notebook</span><span>A6</span></figcaption></figure>
+          <figure><img src="/landing/zines/d91f3459b6c1f1a40d08a72a3c192583.jpg" alt="zine"><figcaption><span>Layers</span><span>A4</span></figcaption></figure>
+          <figure><img src="/landing/zines/fcd768a630a91c386bbcb4709a4b40fb.jpg" alt="zine"><figcaption><span>Grain</span><span>A5</span></figcaption></figure>
+          <figure><img src="/landing/zines/fdfa1329683b1afead3a8fc82568970a.jpg" alt="zine"><figcaption><span>Edition</span><span>A6</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 10 — FINAL CTA ===================== -->
+    <section class="final">
+      <div class="wrap">
+        <h2 class="serif reveal">Make your first zine today.</h2>
+        <p class="reveal">No account required · no learning curve · free</p>
+        <div class="reveal"><a class="btn" href="https://pocketzine.app">Start Creating</a></div>
+        <div class="ascii reveal">+ · · · · · · · · · · · · · · · · · · · · · · +</div>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer>
+      <div class="wrap">
+        <div class="foot-top">
+          <div>
+            <a class="brand" href="#top"><img src="/landing/logo.svg" alt="Pocket Zine" /></a>
+            <p class="mono" style="margin-top:14px;color:var(--ink-faint);max-width:30ch;">A local-first publishing tool for independent makers.</p>
+          </div>
+          <div class="foot-cols">
+            <div class="foot-col">
+              <h4>Product</h4>
+              <a href="https://pocketzine.app">Open App</a>
+              <a href="#templates">Templates</a>
+              <a href="#export">Export</a>
+              <a href="#gallery">Gallery</a>
+            </div>
+            <div class="foot-col">
+              <h4>About</h4>
+              <a href="#">Manifesto</a>
+              <a href="#">Changelog</a>
+              <a href="#">Roadmap</a>
+            </div>
+            <div class="foot-col">
+              <h4>Find us</h4>
+              <a href="#">Product Hunt</a>
+              <a href="#">Instagram</a>
+              <a href="#">Mastodon</a>
+            </div>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <span>© 2026 Pocket Zine — your work stays yours</span>
+          <span>Made by makers, for makers</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // animated ascii book (opens, then turns pages)
+      (() => {
+        const el = document.getElementById('asciiBook');
+        if (!el) return;
+        const frames = [
+          // closed
+          "┌─────────────┐\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n└─────────────┘",
+          // spine splits
+          "┌──────┬──────┐\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n└──────┴──────┘",
+          // open, content
+          "┌──────┬──────┐\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ▦▦   │ ──── │\n│ ──── │ ▦▦   │\n│ ──── │ ──── │\n└──────┴──────┘",
+          // page lifting
+          "┌──────┬╲─────┐\n│ ──── │░╲────│\n│ ──── │ ░╲───│\n│ ▦▦   │  ░╲──│\n│ ──── │ ─╱░  │\n│ ──── │╱──░  │\n└──────┴╱─────┘",
+          // turned, fresh page
+          "┌──────┬──────┐\n│ ──── │ ──── │\n│ ▦▦   │ ──── │\n│ ──── │ ▦▦   │\n│ ──── │ ──── │\n│ ──── │ ──── │\n└──────┴──────┘",
+        ];
+        const seq = [0, 1, 2, 3, 4, 3, 2, 1];
+        let i = 0;
+        el.textContent = frames[0];
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) { el.textContent = frames[2]; return; }
+        setInterval(() => { i = (i + 1) % seq.length; el.textContent = frames[seq[i]]; }, 620);
+      })();
+
+      // scroll reveal
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
