@@ -183,12 +183,13 @@
       .wf-ico.on { border-color: var(--ink); color: var(--ink); background: var(--paper); }
       .wf-tpl { border-right: 1px solid var(--line); padding: 12px 10px; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
       .wf-tpl-head { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); }
-      .wf-tabs { display: flex; gap: 14px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line); }
-      .wf-tabs .on { color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-bottom: -1px; }
       .wf-tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-      .wf-tpl-grid i { aspect-ratio: 4/5; border: 1px solid var(--line-strong); border-radius: 2px; background: var(--paper);
-        background-image: linear-gradient(var(--line-strong), var(--line-strong)), linear-gradient(var(--line-strong), var(--line-strong));
-        background-size: 52% 26%, 30% 22%; background-position: 16% 20%, 70% 72%; background-repeat: no-repeat; }
+      .wt { aspect-ratio: 4/5; border: 1px solid var(--line-strong); border-radius: 2px; background: #fff; padding: 5px; display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
+      .wt b { display: block; }
+      .wt .img { background: var(--line-strong); border-radius: 1px; }
+      .wt .ln { height: 2px; background: var(--line); border-radius: 1px; }
+      .wt .ln.s { width: 55%; }
+      .wt-col { display: flex; flex-direction: column; gap: 3px; flex: 1; justify-content: center; }
       /* canvas */
       .wf-canvas { position: relative; padding: 16px; display: flex; align-items: center; justify-content: center;
         background-color: var(--paper-2);
@@ -211,14 +212,14 @@
       .wf-dot.solid { background: var(--ink); }
       /* spread filmstrip */
       .wf-film { display: flex; align-items: center; gap: 7px; padding: 9px 11px; border-top: 1px solid var(--line); background: var(--paper); overflow: hidden; }
-      .wf-film i { width: 34px; height: 26px; border: 1px solid var(--line-strong); border-radius: 2px; background: #fff; flex: 0 0 auto;
-        background-image: linear-gradient(45deg, transparent 46%, var(--line) 48% 52%, transparent 54%); }
+      .wf-film i { width: 36px; height: 26px; border: 1px solid var(--line-strong); border-radius: 2px; background: #fff; flex: 0 0 auto;
+        background-image: linear-gradient(90deg, transparent calc(50% - 0.5px), var(--line-strong) 50%, transparent calc(50% + 0.5px)); }
       .wf-film i.on { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
       .wf-add { width: 26px; height: 26px; border: 1px dashed var(--line-strong); border-radius: 2px; display: flex; align-items: center; justify-content: center; color: var(--ink-faint); font-size: 12px; flex: 0 0 auto; }
       @media (max-width: 760px) { .wf-top-c { display: none; } .wf-body { grid-template-columns: 30px 1fr; } .wf-tpl, .wf-film { display: none; } }
 
       /* ---- social proof / create marquee ---- */
-      .proof { padding: 38px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .proof { padding: 38px 0; border-top: 1px solid var(--line); }
       .proof .madeby { text-align: center; max-width: 60ch; margin: 0 auto; font-family: var(--serif); font-size: clamp(18px, 2.4vw, 26px); color: var(--ink); }
       .proof .madeby b { color: var(--accent); font-weight: 400; font-style: italic; }
       .tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 22px; }
@@ -248,6 +249,9 @@
       .col.pz { background: var(--ink); color: var(--paper); }
       .col h3 { font-family: var(--serif); font-size: 26px; margin-bottom: 6px; }
       .col .tagline { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+      .col .face { display: block; font-family: var(--mono); font-size: 20px; line-height: 1; margin-bottom: 16px; }
+      .col.other .face { color: var(--ink-faint); }
+      .col.pz .face { color: var(--accent); }
       .col ul { list-style: none; padding: 0; margin: 26px 0 0; }
       .col li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px dashed var(--line-strong); font-size: 15px; align-items: baseline; }
       .col.pz li { border-top-color: #33312a; }
@@ -284,8 +288,7 @@
       /* ---- devices ---- */
       .devices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 52px; background: var(--line); border: 1px solid var(--line); }
       .device { background: var(--panel); padding: 38px 24px 30px; text-align: center; }
-      .ascii-device { font-family: var(--mono); font-weight: 700; font-size: clamp(13px, 1.5vw, 17px); line-height: 1.05; color: var(--ink); margin: 0 auto 24px; display: inline-block;
-        filter: drop-shadow(2px 3px 0 rgba(23,22,15,0.13)) drop-shadow(4px 6px 0 rgba(23,22,15,0.05)); }
+      .ascii-device { font-family: var(--mono); font-weight: 700; font-size: clamp(13px, 1.5vw, 17px); line-height: 1.05; color: var(--ink); margin: 0 auto 24px; display: inline-block; }
       .ascii-device .ac { color: var(--accent); }
       .device .dn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
       .device .dd { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
@@ -386,8 +389,14 @@
               </div>
               <div class="wf-tpl">
                 <span class="wf-tpl-head">Templates</span>
-                <div class="wf-tabs"><span class="on">Spread</span><span>Page</span></div>
-                <div class="wf-tpl-grid"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="wf-tpl-grid">
+                  <span class="wt"><b class="img" style="height:46%"></b><b class="ln"></b><b class="ln"></b><b class="ln s"></b></span>
+                  <span class="wt" style="flex-direction:row;gap:4px"><b class="img" style="flex:1"></b><b class="img" style="flex:1"></b></span>
+                  <span class="wt" style="flex-direction:row;gap:4px"><b class="img" style="width:46%"></b><span class="wt-col"><b class="ln"></b><b class="ln"></b><b class="ln s"></b></span></span>
+                  <span class="wt"><b class="img" style="flex:1"></b></span>
+                  <span class="wt"><b class="ln"></b><b class="ln"></b><b class="ln"></b><b class="ln"></b><b class="ln s"></b></span>
+                  <span class="wt"><b class="ln s" style="align-self:center"></b><b class="img" style="height:36%;margin:2px 0"></b><b class="ln"></b></span>
+                </div>
               </div>
               <div class="wf-canvas">
                 <div class="wf-spread">
@@ -461,6 +470,7 @@
         </div>
         <div class="compare reveal">
           <div class="col other">
+            <span class="face" aria-hidden="true">(&gt;_&lt;)</span>
             <span class="tagline">Other design tools</span>
             <h3>Overwhelming</h3>
             <ul>
@@ -471,6 +481,7 @@
             </ul>
           </div>
           <div class="col pz">
+            <span class="face" aria-hidden="true">(^_^)</span>
             <span class="tagline">Pocket Zine</span>
             <h3>Focused</h3>
             <ul>
@@ -562,11 +573,11 @@
 ╚═══════════╝</pre><div class="dn">Browser</div><div class="dd">Nothing to install</div></div>
         </div>
         <ul class="chips reveal">
-          <li>Use Apple Pencil</li>
-          <li>Draw directly on pages</li>
-          <li>Bring your own fonts</li>
-          <li>Import your own images</li>
-          <li>Create anywhere</li>
+          <li>Apple Pencil support</li>
+          <li>Freehand drawing</li>
+          <li>Custom fonts</li>
+          <li>Image import</li>
+          <li>Offline-first</li>
         </ul>
       </div>
     </section>
@@ -580,7 +591,6 @@
             <span class="label"><span class="dot"></span> 07 — Made with Pocket Zine</span>
             <h2>A wall of zines.</h2>
           </div>
-          <p class="mono">Nobody wants a tool. They want the result. ↓</p>
         </div>
         <div class="masonry reveal">
           <figure><img src="/landing/zines/233361a4af2f50dd177b80e22f6e15f1.jpg" alt="zine"><figcaption><span>Wrong Person</span><span>A5</span></figcaption></figure>
@@ -655,28 +665,24 @@
     </footer>
 
     <script>
-      // animated ascii book (opens, then turns pages)
+      // animated ascii book — opens once, then cycles through different
+      // zine layouts (no page-flip frame; the variety is the point)
       (() => {
         const el = document.getElementById('asciiBook');
         if (!el) return;
-        const frames = [
-          // closed
-          "┌─────────────┐\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n└─────────────┘",
-          // spine splits
-          "┌──────┬──────┐\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n└──────┴──────┘",
-          // open, content
-          "┌──────┬──────┐\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ▦▦   │ ──── │\n│ ──── │ ▦▦   │\n│ ──── │ ──── │\n└──────┴──────┘",
-          // page lifting
-          "┌──────┬╲─────┐\n│ ──── │░╲────│\n│ ──── │ ░╲───│\n│ ▦▦   │  ░╲──│\n│ ──── │ ─╱░  │\n│ ──── │╱──░  │\n└──────┴╱─────┘",
-          // turned, fresh page
-          "┌──────┬──────┐\n│ ──── │ ──── │\n│ ▦▦   │ ──── │\n│ ──── │ ▦▦   │\n│ ──── │ ──── │\n│ ──── │ ──── │\n└──────┴──────┘",
-        ];
-        const seq = [0, 1, 2, 3, 4, 3, 2, 1];
+        const closed = "┌─────────────┐\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n│ ░░░░░░░░░░░ │\n└─────────────┘";
+        const split  = "┌──────┬──────┐\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n│ ░░░░ │ ░░░░ │\n└──────┴──────┘";
+        // open-book layout variants
+        const v1 = "┌──────┬──────┐\n│ ──── │ ──── │\n│ ──── │ ▦▦▦▦ │\n│ ▦▦▦▦ │ ▦▦▦▦ │\n│ ▦▦▦▦ │ ──── │\n│ ──── │ ──── │\n└──────┴──────┘";
+        const v2 = "┌──────┬──────┐\n│ ▦▦▦▦ │ ──── │\n│ ▦▦▦▦ │ ──── │\n│ ▦▦▦▦ │ ──── │\n│ ▦▦▦▦ │ ──── │\n│ ──── │ ──── │\n└──────┴──────┘";
+        const v3 = "┌──────┬──────┐\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ──── │ ──── │\n└──────┴──────┘";
+        const v4 = "┌──────┬──────┐\n│ ▦▦   │   ▦▦ │\n│ ──── │ ──── │\n│ ──── │ ──── │\n│ ▦▦   │   ▦▦ │\n│ ──── │ ──── │\n└──────┴──────┘";
+        const frames = [closed, split, v1, v2, v3, v4];
+        const seq = [0, 1, 2, 3, 4, 5, 2, 3, 4, 5];
         let i = 0;
         el.textContent = frames[0];
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduce) { el.textContent = frames[2]; return; }
-        setInterval(() => { i = (i + 1) % seq.length; el.textContent = frames[seq[i]]; }, 620);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = v1; return; }
+        setInterval(() => { i = (i + 1) % seq.length; el.textContent = frames[seq[i]]; }, 720);
       })();
 
       // scroll reveal
