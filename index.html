@@ -164,34 +164,58 @@
       }
       .hero-visual .bar .dots { display: flex; gap: 6px; }
       .hero-visual .bar .dots i { width: 8px; height: 8px; border: 1px solid var(--line-strong); border-radius: 50%; display: inline-block; }
-      /* lo-fi wireframe of the editor */
-      .wireframe { display: grid; grid-template-columns: 54px 1fr 184px; min-height: clamp(300px, 42vw, 500px); background: var(--panel); }
-      .wf-tools { border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; padding: 16px 0; align-items: center; }
-      .wf-tool { width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; color: var(--ink-soft); background: var(--paper); }
-      .wf-tool:first-child { border-color: var(--accent); color: var(--accent); }
-      .wf-canvas { position: relative; padding: clamp(22px, 3.5vw, 46px); display: flex; align-items: center; justify-content: center;
+      /* lo-fi wireframe — mirrors the real editor chrome */
+      .wireframe { display: flex; flex-direction: column; min-height: clamp(330px, 46vw, 540px); background: var(--panel); font-family: var(--mono); }
+      /* top bar */
+      .wf-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 11px; border-bottom: 1px solid var(--line); background: var(--paper); }
+      .wf-top-l { display: flex; align-items: center; gap: 8px; min-width: 0; }
+      .wf-back { color: var(--ink-faint); font-size: 10px; }
+      .wf-title { font-family: var(--serif); font-size: 14px; color: var(--ink); white-space: nowrap; }
+      .wf-top-c { display: flex; gap: 6px; }
+      .wf-top-r { display: flex; gap: 6px; }
+      .wf-pill { font-size: 9px; letter-spacing: 0.03em; color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 3px; padding: 4px 8px; white-space: nowrap; background: var(--panel); }
+      .wf-pill.solid { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+      .wf-zoom { color: var(--ink-faint); }
+      /* body */
+      .wf-body { flex: 1; display: grid; grid-template-columns: 34px 130px 1fr; min-height: 0; }
+      .wf-rail { border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 12px 0; background: var(--paper); }
+      .wf-ico { width: 22px; height: 22px; border: 1px solid var(--line-strong); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--ink-soft); background: var(--panel); }
+      .wf-ico.on { border-color: var(--ink); color: var(--ink); background: var(--paper); }
+      .wf-tpl { border-right: 1px solid var(--line); padding: 12px 10px; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+      .wf-tpl-head { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); }
+      .wf-tabs { display: flex; gap: 14px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line); }
+      .wf-tabs .on { color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-bottom: -1px; }
+      .wf-tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+      .wf-tpl-grid i { aspect-ratio: 4/5; border: 1px solid var(--line-strong); border-radius: 2px; background: var(--paper);
+        background-image: linear-gradient(var(--line-strong), var(--line-strong)), linear-gradient(var(--line-strong), var(--line-strong));
+        background-size: 52% 26%, 30% 22%; background-position: 16% 20%, 70% 72%; background-repeat: no-repeat; }
+      /* canvas */
+      .wf-canvas { position: relative; padding: 16px; display: flex; align-items: center; justify-content: center;
+        background-color: var(--paper-2);
         background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-        background-size: 22px 22px; }
-      .wf-spread { display: flex; box-shadow: 0 2px 0 rgba(0,0,0,0.04); }
-      .wf-page { width: clamp(96px, 13vw, 152px); aspect-ratio: 3/4; background: var(--paper); border: 1px solid var(--ink); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        background-size: 20px 20px; }
+      .wf-spread { display: flex; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+      .wf-page { width: clamp(78px, 10.5vw, 120px); aspect-ratio: 3/4; background: #fff; border: 1px solid var(--ink); padding: 10px; display: flex; flex-direction: column; gap: 6px; }
       .wf-page:first-child { border-right: 1px dashed var(--line-strong); }
-      .wf-img { border: 1px solid var(--line-strong); height: 46%;
+      .wf-page.title { align-items: center; text-align: center; }
+      .wf-img { border: 1px solid var(--line-strong);
         background:
           linear-gradient(45deg, transparent calc(50% - 0.6px), var(--line-strong) 50%, transparent calc(50% + 0.6px)),
           linear-gradient(-45deg, transparent calc(50% - 0.6px), var(--line-strong) 50%, transparent calc(50% + 0.6px)); }
-      .wf-img.sm { height: 30%; margin-top: auto; }
-      .wf-line { height: 5px; background: var(--line-strong); border-radius: 2px; display: block; }
-      .wf-line.head { height: 9px; background: var(--ink); }
+      .wf-line { height: 4px; background: var(--line-strong); border-radius: 2px; display: block; }
+      .wf-line.head { height: 7px; background: var(--ink); }
       .w40 { width: 40%; } .w50 { width: 50%; } .w60 { width: 60%; } .w70 { width: 70%; } .w80 { width: 80%; } .w90 { width: 90%; }
-      .wf-tag { position: absolute; left: 16px; bottom: 12px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
-      .wf-panel { border-left: 1px solid var(--line); padding: 16px 14px; display: flex; flex-direction: column; gap: 9px; }
-      .wf-plabel { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
-      .wf-field { height: 26px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); }
-      .wf-field.short { height: 20px; width: 65%; }
-      .wf-swatches { display: flex; gap: 6px; margin-top: 2px; }
-      .wf-swatches i { width: 18px; height: 18px; border: 1px solid var(--line-strong); border-radius: 3px; display: block; background: var(--paper); }
-      .wf-swatches i.on { background: var(--accent); border-color: var(--accent); }
-      @media (max-width: 760px) { .wireframe { grid-template-columns: 46px 1fr; } .wf-panel { display: none; } }
+      /* floating canvas toolbar (right edge) */
+      .wf-toolbar { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 4px; padding: 5px; background: var(--paper); border: 1px solid var(--line-strong); border-radius: 18px; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+      .wf-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--ink-soft); }
+      .wf-dot.solid { background: var(--ink); }
+      /* spread filmstrip */
+      .wf-film { display: flex; align-items: center; gap: 7px; padding: 9px 11px; border-top: 1px solid var(--line); background: var(--paper); overflow: hidden; }
+      .wf-film i { width: 34px; height: 26px; border: 1px solid var(--line-strong); border-radius: 2px; background: #fff; flex: 0 0 auto;
+        background-image: linear-gradient(45deg, transparent 46%, var(--line) 48% 52%, transparent 54%); }
+      .wf-film i.on { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+      .wf-add { width: 26px; height: 26px; border: 1px dashed var(--line-strong); border-radius: 2px; display: flex; align-items: center; justify-content: center; color: var(--ink-faint); font-size: 12px; flex: 0 0 auto; }
+      @media (max-width: 760px) { .wf-top-c { display: none; } .wf-body { grid-template-columns: 30px 1fr; } .wf-tpl, .wf-film { display: none; } }
 
       /* ---- social proof / create marquee ---- */
       .proof { padding: 38px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -342,41 +366,58 @@
             <span class="dots"><i></i><i></i><i></i></span>
           </div>
           <div class="wireframe" aria-label="A simplified wireframe of the Pocket Zine editor">
-            <aside class="wf-tools">
-              <span class="wf-tool">▦</span>
-              <span class="wf-tool">▤</span>
-              <span class="wf-tool">T</span>
-              <span class="wf-tool">⬚</span>
-              <span class="wf-tool">✎</span>
-              <span class="wf-tool">◍</span>
-            </aside>
-            <div class="wf-canvas">
-              <div class="wf-spread">
-                <div class="wf-page">
-                  <div class="wf-img"></div>
-                  <span class="wf-line w70"></span>
-                  <span class="wf-line w90"></span>
-                  <span class="wf-line w50"></span>
+            <!-- editor top bar -->
+            <div class="wf-top">
+              <div class="wf-top-l"><span class="wf-back">◀</span><span class="wf-title">Untitled Zine</span></div>
+              <div class="wf-top-c">
+                <span class="wf-pill">A5 Spread ▾</span>
+                <span class="wf-pill">Grid</span>
+                <span class="wf-pill wf-zoom">−&nbsp;69%&nbsp;+</span>
+              </div>
+              <div class="wf-top-r"><span class="wf-pill">Save</span><span class="wf-pill solid">Export</span></div>
+            </div>
+            <!-- body: icon rail · templates panel · canvas -->
+            <div class="wf-body">
+              <div class="wf-rail">
+                <span class="wf-ico on">▦</span>
+                <span class="wf-ico">▭</span>
+                <span class="wf-ico">◳</span>
+                <span class="wf-ico">⌗</span>
+              </div>
+              <div class="wf-tpl">
+                <span class="wf-tpl-head">Templates</span>
+                <div class="wf-tabs"><span class="on">Spread</span><span>Page</span></div>
+                <div class="wf-tpl-grid"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="wf-canvas">
+                <div class="wf-spread">
+                  <div class="wf-page title">
+                    <span class="wf-line head w70"></span>
+                    <span class="wf-line head w50"></span>
+                    <div class="wf-img" style="width:60%;height:34%;margin:9px 0;"></div>
+                    <span class="wf-line w40"></span>
+                  </div>
+                  <div class="wf-page">
+                    <div class="wf-img" style="width:72%;height:38%;align-self:flex-end;"></div>
+                    <span class="wf-line w90"></span>
+                    <span class="wf-line w90"></span>
+                    <span class="wf-line w80"></span>
+                    <span class="wf-line w50"></span>
+                  </div>
                 </div>
-                <div class="wf-page">
-                  <span class="wf-line w40 head"></span>
-                  <span class="wf-line w80"></span>
-                  <span class="wf-line w90"></span>
-                  <span class="wf-line w60"></span>
-                  <div class="wf-img sm"></div>
+                <div class="wf-toolbar">
+                  <span class="wf-dot solid"></span>
+                  <span class="wf-dot">▦</span>
+                  <span class="wf-dot">T</span>
+                  <span class="wf-dot">▢</span>
+                  <span class="wf-dot">✎</span>
                 </div>
               </div>
-              <span class="wf-tag">spread 02 / 08 · A5</span>
             </div>
-            <aside class="wf-panel">
-              <span class="wf-plabel">Properties</span>
-              <div class="wf-field"></div>
-              <div class="wf-field"></div>
-              <span class="wf-plabel">Grid · 12 col</span>
-              <div class="wf-field short"></div>
-              <span class="wf-plabel">Fill</span>
-              <div class="wf-swatches"><i></i><i></i><i class="on"></i><i></i></div>
-            </aside>
+            <!-- spread filmstrip -->
+            <div class="wf-film">
+              <i class="on"></i><i></i><i></i><i></i><i></i><span class="wf-add">+</span>
+            </div>
           </div>
         </div>
       </div>
